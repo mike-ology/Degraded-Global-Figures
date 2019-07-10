@@ -276,7 +276,6 @@ begin
 					begin
 
 						picture next_stimulus = new picture();
-						term.print_line("\n");
 						
 						loop
 							int v_line = 1
@@ -332,11 +331,10 @@ begin
 								end;
 								
 								if arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 0 then
-										next_stimulus.add_part( background_part, (h_line * 20.0) - (15 * 20.0), (v_line * 20.0) - (15 * 20.0) );
+										next_stimulus.add_part( background_part, (h_line * 20.0) - (16 * 20.0), (v_line * 20.0) - (16 * 20.0) );
 								elseif arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 1 then
-										next_stimulus.add_part( shape_part, (h_line * 20.0) - (15 * 20.0), (v_line * 20.0) - (15 * 20.0) );
+										next_stimulus.add_part( shape_part, (h_line * 20.0) - (16 * 20.0), (v_line * 20.0) - (16 * 20.0) );
 								end;
-
 								
 								h_line = h_line + 1;
 							end;
@@ -344,8 +342,11 @@ begin
 							v_line = v_line + 1;
 						end;
 						
-								next_stimulus.present();
-								#wait_interval(2000);
+						next_stimulus.set_description( string(l_shape)+";"+string(luminance)+";"+string(arr_degradation_levels[degradation])+";"+string(g_shape)+";"+string(corner)+";"+string(offset) );
+						arr_generated_stimuli.add( next_stimulus );
+						#next_stimulus.present();
+						#wait_interval(2000);
+
 						offset = offset + 1;
 					end;
 					
@@ -363,4 +364,57 @@ begin
 	end;
 	
 	l_shape = l_shape + 1;
+end;
+
+## STIMULI NOW ALL STORED IN AN 1-D ARRAY (arr_generated_stimuli)
+
+arr_generated_stimuli.shuffle();
+
+loop
+	int i = 1
+until
+	i > arr_generated_stimuli.count()
+begin
+	line_graphic line1 = new line_graphic();
+	line1.set_next_line_width( 3 );
+	line1.set_next_line_color( 255, 0, 0, 255 );
+	line1.add_line( 0, 400, 0, -400 );
+	line1.add_line( -400, 0, 400, 0 );
+	line1.redraw();
+	#arr_generated_stimuli[i].add_part( line1, 0, 0 );
+
+	array <string> stim_info [6];
+	arr_generated_stimuli[i].description().split( ";", stim_info );
+	
+	string global_shape;
+	string local_shape;
+	string luminance;
+	string corner;
+	string edge_offset = stim_info[6];
+	string degradation = stim_info[3];
+
+	if stim_info[4] == "1" then global_shape = "circle" elseif stim_info[4] == "2" then global_shape = "diamond"; end;
+	if stim_info[1] == "1" then local_shape = "circle" elseif stim_info[1] == "2" then local_shape = "diamond"; end;
+	if stim_info[2] == "1" then luminance = "dark-on-light" elseif stim_info[2] == "2" then luminance = "light-on-dark"; end;
+	if stim_info[5] == "1" then 
+		corner = "1"
+	elseif stim_info[5] == "2" then 
+		corner = "2";
+	elseif stim_info[5] == "3" then 
+		corner = "3";
+	elseif stim_info[5] == "4" then 
+		corner = "4";
+	end;
+
+	text text1 = new text();
+	text text2 = new text();
+	text1.set_caption( "Global shape: " + global_shape + " - " + "Local shape: " + local_shape + " - " + "Luminance: " + luminance, true);
+	text2.set_caption( "Corner: " + corner + " - " + "Edge Offset: " + edge_offset + " - " + "Degration Level: " + degradation, true);
+	arr_generated_stimuli[i].add_part( text1, 0, 480 );
+	arr_generated_stimuli[i].add_part( text2, 0, 420 );
+	
+	
+	arr_generated_stimuli[i].present();
+	wait_interval(2500);
+	i = i + 1;
 end;

@@ -26,7 +26,8 @@ array <string> local_part_filenames [0];
 num_local_parts = get_directory_files( stimulus_directory, local_part_filenames );
 
 # array [shape][shape_colour][xxx]
-array <bitmap> arr_local_parts [2][3][0];
+array <bitmap> arr_local_parts [2][3][3][0];
+array <bitmap> arr_l_parts [2][0];
 
 loop
 	int i = 1
@@ -53,15 +54,30 @@ begin
 		stimulus_type = 2
 	end;
 		
-	int stimulus_colour = int( filename_parts[2] );
+	int shape_colour = int( filename_parts[2] );
+	int background_colour = int( filename_parts[3] );
 
 	# put bitmap in array according to shape and colour
-	arr_local_parts[stimulus_type][stimulus_colour].add( next_bitmap );
+	arr_local_parts[stimulus_type][shape_colour][background_colour].add( next_bitmap );
+	arr_l_parts[stimulus_type].add( next_bitmap );
 	next_bitmap.set_load_size( 20.0, 20.0, 0.0 );
 	next_bitmap.load();
 		
 	i = i + 1;
 end;
+
+array <bitmap> l_light_circles [0];
+array <bitmap> l_dark_circles [0];
+array <bitmap> l_light_diamonds [0];
+array <bitmap> l_dark_diamonds [0];
+l_light_circles.append( arr_local_parts[1][1][1] );
+#l_light_circles.append( arr_local_parts[1][2] );
+#l_dark_circles.append( arr_local_parts[1][2] );
+l_dark_circles.append( arr_local_parts[1][3][2] );
+l_light_diamonds.append( arr_local_parts[2][1][1] );
+#l_light_diamonds.append( arr_local_parts[2][2] );
+#l_dark_diamonds.append( arr_local_parts[2][2] );
+l_dark_diamonds.append( arr_local_parts[2][3][2] );
 
 #################################################################
 # Create global shapes using local shapes
@@ -98,7 +114,7 @@ array <int> arr_shape [2][23][23] = {{
 {0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	},
 {0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0	},
 {0,	0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0,	0	},
-{0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0	},
+{0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0,	0,	0	},
 {0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0,	0	},
 {0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0,	0	},
 {0,	0,	0,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	0,	0,	0	},
@@ -140,8 +156,8 @@ end;
 #term.print_line( arr_temp_stimulus );
 
 array <int> arr_offset [4][4][2] = {
-{ { 0, 0 }, { 1, 1 }, { 2, 2 }, { 3, 3 } },
-{ { 8, 0}, { 7, 1 }, { 6, 2 }, { 5,  3 } },
+{ { 0, 0}, { 1, 1 }, { 2, 2 }, { 3, 3 } },
+{ { 8, 0}, { 7, 1 }, { 6, 2 }, { 5, 3 } },
 { { 0, 8}, { 1, 7 }, { 2, 6 }, { 3, 5 } },
 { { 8, 8}, { 7, 7 }, { 6, 6 }, { 5, 5 } }
 };
@@ -209,50 +225,142 @@ int shape_template = 1;
 	shape = shape + 1;
 end;
 
-
-#################				
-loop
-	int shape = 1
-until
-	shape > 2
-begin
-
-	
-	loop
-		int corner = 1
-	until
-		corner > 4
-	begin
-
-		loop
-			int offset = 1
-		until
-			offset > 4
-		begin
-
-			term.print_line( "\n" );
-
-			loop
-				int v_line = 1
-			until
-				v_line > 31
-			begin
-				
-				term.print_line( arr_all_temp_stimuli[shape][corner][offset][v_line] );
-				v_line = v_line + 1;
-			end;
-			
-			offset = offset + 1;
-		end;
-
-		corner = corner + 1;
-	end;
-	
-	shape = shape + shape;
-end;
-
 #################				
 
 # Create stimulus array (for presentation)
 
+array <int> arr_degradation_levels [4] = { 20, 40, 60, 80 };
+# values to be divided by 100 later
 
+array <int> arr_stimulus_variations [2][2][4][2][4][4][31][31];
+# [local shape][luminance][degradation]...[[values stored in arr_all_temp_stimuli]]
+
+array <picture> arr_generated_stimuli [0];
+
+loop
+	int l_shape = 1
+until
+	l_shape > 2
+begin
+	
+	loop
+		int luminance = 1
+	until
+		luminance > 2
+	begin
+		
+		loop
+			int degradation = 1
+		until
+			degradation > arr_degradation_levels.count()
+		begin
+			
+			arr_stimulus_variations[l_shape][luminance][degradation] = arr_all_temp_stimuli;
+			
+			loop
+				int g_shape = 1
+			until
+				g_shape > 2
+			begin
+				
+				loop
+					int corner = 1
+				until
+					corner > 4
+				begin
+					
+					loop
+						int offset = 1
+					until
+						offset > 4
+					begin
+
+						picture next_stimulus = new picture();
+						term.print_line("\n");
+						
+						loop
+							int v_line = 1
+						until
+							v_line > 31
+						begin
+							
+							loop
+								int h_line = 1
+							until
+								h_line > 31
+							begin
+								
+								picture_part shape_part;
+								picture_part background_part;
+
+								if l_shape == 1 then
+									# local circles
+									l_light_circles.shuffle();
+									l_dark_circles.shuffle();
+									if	luminance == 1 then
+										# light on dark
+										shape_part = l_light_circles[1];
+										background_part = l_dark_circles[1];
+									elseif luminance == 2 then
+										# dark on light
+										shape_part = l_dark_circles[1];
+										background_part = l_light_circles[1];
+									end;
+								elseif l_shape == 2 then
+									# local diamonds
+									l_light_diamonds.shuffle();
+									l_dark_diamonds.shuffle();
+									if	luminance == 1 then
+										# light on dark
+										shape_part = l_light_diamonds[1];
+										background_part = l_dark_diamonds[1];
+									elseif luminance == 2 then
+										# dark on light
+										shape_part = l_dark_diamonds[1];
+										background_part = l_light_diamonds[1];
+									end;
+								end;
+								
+								# degradation check
+								if arr_degradation_levels[degradation] >= random( 1, 100 ) then
+									# degraded (random element of same shape
+									arr_l_parts[l_shape].shuffle();
+									shape_part = arr_l_parts[l_shape][1];
+									background_part = arr_l_parts[l_shape][1];
+								else
+									# intact
+								end;
+								
+								if arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 0 then
+										next_stimulus.add_part( background_part, (h_line * 20.0) - (15 * 20.0), (v_line * 20.0) - (15 * 20.0) );
+								elseif arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 1 then
+										next_stimulus.add_part( shape_part, (h_line * 20.0) - (15 * 20.0), (v_line * 20.0) - (15 * 20.0) );
+								end;
+
+								
+								h_line = h_line + 1;
+							end;
+							
+							v_line = v_line + 1;
+						end;
+						
+								next_stimulus.present();
+								#wait_interval(2000);
+						offset = offset + 1;
+					end;
+					
+					corner = corner + 1;
+				end;
+				
+				g_shape = g_shape + 1;
+			end;
+			
+					
+			degradation = degradation + 1;
+		end;
+		
+		luminance = luminance + 1;
+	end;
+	
+	l_shape = l_shape + 1;
+end;

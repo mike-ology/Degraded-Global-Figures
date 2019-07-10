@@ -397,12 +397,12 @@ begin
 	if stim_info[1] == "1" then local_shape = "circle" elseif stim_info[1] == "2" then local_shape = "diamond"; end;
 	if stim_info[2] == "1" then luminance = "dark-on-light" elseif stim_info[2] == "2" then luminance = "light-on-dark"; end;
 	if stim_info[5] == "1" then 
-		corner = "1"
+		corner = "bottom left"
 	elseif stim_info[5] == "2" then 
-		corner = "2";
-	elseif stim_info[5] == "3" then 
+		corner = "bottom right";
+	elseif stim_info[5] == "top left" then 
 		corner = "3";
-	elseif stim_info[5] == "4" then 
+	elseif stim_info[5] == "top right" then 
 		corner = "4";
 	end;
 
@@ -415,6 +415,7 @@ begin
 	
 	
 	arr_generated_stimuli[i].present();
+	#display_device.screenshot( string(i) + ".bmp" );
 	wait_interval(2500);
 	i = i + 1;
 end;

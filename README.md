@@ -1,0 +1,2 @@
+# Degraded Global Figures
+ 

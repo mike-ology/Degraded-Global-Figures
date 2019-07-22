@@ -14,12 +14,14 @@ default_formatted_text = true;
 
 begin;
 
-#picture{}main_pic;
+
 
 begin_pcl;
 
 #################################################################
 # Load local parts into an array for later global figure creation
+
+double local_element_size = 20.0;
 
 int num_local_parts;
 array <string> local_part_filenames [0];
@@ -61,7 +63,7 @@ begin
 	# put bitmap in array according to shape and colour
 	arr_local_parts[stimulus_type][shape_colour][background_colour].add( next_bitmap );
 	arr_l_parts[stimulus_type].add( next_bitmap );
-	next_bitmap.set_load_size( 20.0, 20.0, 0.0 );
+	next_bitmap.set_load_size( local_element_size, local_element_size, 0.0 );
 	next_bitmap.load();
 		
 	i = i + 1;
@@ -335,10 +337,13 @@ begin
 									# intact
 								end;
 								
+								int gap = 1;
+								int stim_size = 20;
+
 								if arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 0 then
-										next_stimulus.add_part( background_part, (h_line * 20.0) - (16 * 20.0), (v_line * 20.0) - (16 * 20.0) );
+										next_stimulus.add_part( background_part, (h_line - 16) * stim_size + ((h_line - 16)*gap), (v_line - 16) * stim_size + ((v_line - 16)*gap) );
 								elseif arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 1 then
-										next_stimulus.add_part( shape_part, (h_line * 20.0) - (16 * 20.0), (v_line * 20.0) - (16 * 20.0) );
+										next_stimulus.add_part( shape_part, (h_line - 16) * stim_size + ((h_line - 16)*gap), (v_line - 16) * stim_size + ((v_line - 16)*gap) ) ;
 								end;
 								
 								h_line = h_line + 1;
@@ -380,6 +385,7 @@ loop
 until
 	i > arr_generated_stimuli.count()
 begin
+	# line for debugging
 	line_graphic line1 = new line_graphic();
 	line1.set_next_line_width( 3 );
 	line1.set_next_line_color( 255, 0, 0, 255 );

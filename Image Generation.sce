@@ -42,8 +42,8 @@ int scaling = int(get_sdl_variable( "scale_f" ));
 
 array <int> positions [4][2] = {	{ -1, 1 }, {1, 1 }, { 1, -1 }, { -1, -1 } };
 	
-array <int> shape_colours [3] = { 0, 128, 255 };
-array <int> background_colours [2] = { 64, 191 }; 
+array <int> shape_colours [4] = { 0, 85, 171, 255 };
+array <int> background_colours [4] = { 0, 85, 171, 255 }; 
 
 loop
 	int shapes = 1
@@ -67,53 +67,57 @@ begin
 			loop
 				int shape_variation = 1
 			until
-				shape_variation > 3
+				shape_variation > shape_colours.count()
 			begin
 			
 				loop
 					int background_variation = 1
 				until
-					background_variation > 2
+					background_variation > background_colours.count()
 				begin
 
-					main_pic.clear();
-					 
-					int x_align;
-					int y_align;
-					picture_part shape;
-												
-					if shapes == 1 then
-						shape = circle;
-					elseif shapes == 2 then
-						shape = diamond;
-					end;
-					
-					background_box.set_color( background_colours[background_variation], background_colours[background_variation], background_colours[background_variation] );
-					main_pic.add_part( background_box, 0, 0 );
-					
-					circle.set_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
-					circle.redraw();
-					diamond.set_fill_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
-					diamond.set_line_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
-					diamond.redraw();
-					
-					main_pic.add_part( shape, 0, 0 );
-					main_pic.set_part_x( 2, positions[corner][1]* offset * (scaling) );
-					main_pic.set_part_y( 2, positions[corner][2]* offset * (scaling) );
-					
-					main_pic.present();
-					wait_interval( 500 );
-					
-					
-					string shape_name;
-					if shapes == 1 then
-						shape_name = "circle"
+					if shape_colours[shape_variation] == background_colours[background_variation] then
+						# skip all of this
 					else
-						shape_name = "diamond"
+
+						main_pic.clear();
+						 
+						int x_align;
+						int y_align;
+						picture_part shape;
+													
+						if shapes == 1 then
+							shape = circle;
+						elseif shapes == 2 then
+							shape = diamond;
+						end;
+						
+						background_box.set_color( background_colours[background_variation], background_colours[background_variation], background_colours[background_variation] );
+						main_pic.add_part( background_box, 0, 0 );
+						
+						circle.set_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
+						circle.redraw();
+						diamond.set_fill_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
+						diamond.set_line_color( shape_colours[shape_variation], shape_colours[shape_variation], shape_colours[shape_variation], 255 );
+						diamond.redraw();
+						
+						main_pic.add_part( shape, 0, 0 );
+						main_pic.set_part_x( 2, positions[corner][1]* offset * (scaling) );
+						main_pic.set_part_y( 2, positions[corner][2]* offset * (scaling) );
+						
+						main_pic.present();
+						wait_interval( 500 );
+						
+						string shape_name;
+						if shapes == 1 then
+							shape_name = "circle"
+						else
+							shape_name = "diamond"
+						end;
+						
+						string image_name = ( shape_name + "_" + string(shape_variation) + "_" + string (background_variation) + "_" + string(corner) + "_" + string(offset) + ".bmp" );
+						display_device.screenshot( image_name );
 					end;
-					
-					string image_name = ( shape_name + "_" + string(shape_variation) + "_" + string (background_variation) + "_" + string(corner) + "_" + string(offset) );
-					display_device.screenshot( image_name );
 					
 					background_variation = background_variation + 1;
 				end;

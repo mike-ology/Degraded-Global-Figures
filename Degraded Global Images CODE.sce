@@ -25,8 +25,9 @@ int num_local_parts;
 array <string> local_part_filenames [0];
 num_local_parts = get_directory_files( stimulus_directory, local_part_filenames );
 
-# array [shape][shape_colour][xxx]
-array <bitmap> arr_local_parts [2][3][3][0];
+# array [shape][shape_colour][bg_colour[i]
+array <bitmap> arr_local_parts [2][4][4][0];
+# array [shape][i]
 array <bitmap> arr_l_parts [2][0];
 
 loop
@@ -70,14 +71,18 @@ array <bitmap> l_light_circles [0];
 array <bitmap> l_dark_circles [0];
 array <bitmap> l_light_diamonds [0];
 array <bitmap> l_dark_diamonds [0];
-l_light_circles.append( arr_local_parts[1][1][1] );
-#l_light_circles.append( arr_local_parts[1][2] );
-#l_dark_circles.append( arr_local_parts[1][2] );
-l_dark_circles.append( arr_local_parts[1][3][2] );
-l_light_diamonds.append( arr_local_parts[2][1][1] );
-#l_light_diamonds.append( arr_local_parts[2][2] );
-#l_dark_diamonds.append( arr_local_parts[2][2] );
-l_dark_diamonds.append( arr_local_parts[2][3][2] );
+
+# Note: the following arrays are not completely filled. For example [1][2][2] is empty
+# as identical background and shape colours result in a square of a single colour.
+
+l_dark_circles.append( arr_local_parts[1][1][2] );
+l_dark_circles.append( arr_local_parts[1][2][1] );
+l_light_circles.append( arr_local_parts[1][3][4] );
+l_light_circles.append( arr_local_parts[1][4][3] );
+l_dark_diamonds.append( arr_local_parts[2][1][2] );
+l_dark_diamonds.append( arr_local_parts[2][2][1] );
+l_light_diamonds.append( arr_local_parts[2][3][4] );
+l_light_diamonds.append( arr_local_parts[2][4][3] );
 
 #################################################################
 # Create global shapes using local shapes
@@ -229,7 +234,7 @@ end;
 
 # Create stimulus array (for presentation)
 
-array <int> arr_degradation_levels [4] = { 20, 40, 60, 80 };
+array <int> arr_degradation_levels [4] = { 0, 20, 40, 60, 80 };
 # values to be divided by 100 later
 
 array <int> arr_stimulus_variations [2][2][4][2][4][4][31][31];

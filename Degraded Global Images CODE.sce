@@ -6,7 +6,7 @@ active_buttons = 0;
 response_logging = log_active;
 no_logfile = true; # default logfile not created
 response_matching = simple_matching;
-default_background_color = 0, 0, 0;
+default_background_color = 128, 128, 128;
 default_font = "Arial";
 default_font_size = 36;
 default_text_color = 255, 255, 255;
@@ -14,14 +14,37 @@ default_formatted_text = true;
 
 begin;
 
-
-
 begin_pcl;
+
+### Experimental Paramaters ### 
+
+	# Size of local elements (effects overall stimulus size)
+	double local_element_size = 20.0;
+
+	# Size of gab between local elements (effects overall stimulus size)
+	int gap = 1;
+
+	# Number of offsets to be used for each corner (ranges from 1-4)
+	int total_offsets = 1;
+	
+	# Degradation levels - Enter integers ranging from 0 - 100 (no degradation to 100% degradation (i.e. random))
+	# Note! Make sure array size is declared correctly!
+	array <int> deg_levels [1] = { 50 };
+	
+	# !! Calculate manually, no need to change
+	int unique_trials = 32 * total_offsets * deg_levels.count();
+	
+	# Number of unique blocks (should be a factor of 32)
+	int max_blocks = 1;
+	
+	# !! Calculate manually, no need to change
+	int trials_per_block = unique_trials/max_blocks;
+	
+	# Repetitions / Loops - for smaller numbers of unique trials, may want to repeat to increase experiment length
+	int block_reps = 1;
 
 #################################################################
 # Load local parts into an array for later global figure creation
-
-double local_element_size = 20.0;
 
 int num_local_parts;
 array <string> local_part_filenames [0];
@@ -162,12 +185,45 @@ end;
 
 #term.print_line( arr_temp_stimulus );
 
-array <int> arr_offset [4][4][2] = {
+array <int> arr_offset [0][0][0];
+
+# [corner][offset_amount][x/y coordinates]
+array <int> arr_offset_4 [4][4][2] = {
 { { 0, 0}, { 1, 1 }, { 2, 2 }, { 3, 3 } },
 { { 8, 0}, { 7, 1 }, { 6, 2 }, { 5, 3 } },
 { { 0, 8}, { 1, 7 }, { 2, 6 }, { 3, 5 } },
 { { 8, 8}, { 7, 7 }, { 6, 6 }, { 5, 5 } }
 };
+	
+array <int> arr_offset_3 [4][3][2] = {
+{ { 0, 0}, { 1, 1 }, { 2, 2 } },
+{ { 8, 0}, { 7, 1 }, { 6, 2 } },
+{ { 0, 8}, { 1, 7 }, { 2, 6 } },
+{ { 8, 8}, { 7, 7 }, { 6, 6 } }
+};
+
+array <int> arr_offset_2 [4][2][2] = {
+{ { 0, 0}, { 1, 1 } },
+{ { 8, 0}, { 7, 1 } },
+{ { 0, 8}, { 1, 7 } },
+{ { 8, 8}, { 7, 7 } }
+};
+array <int> arr_offset_1 [4][1][2] = {
+{ { 0, 0} },
+{ { 8, 0} },
+{ { 0, 8} },
+{ { 8, 8} }
+};
+
+if total_offsets == 4 then
+	arr_offset.assign( arr_offset_4 );
+elseif total_offsets == 3 then
+	arr_offset.assign( arr_offset_3 );
+elseif total_offsets == 2 then
+	arr_offset.assign( arr_offset_2 );
+elseif total_offsets == 1 then
+	arr_offset.assign( arr_offset_1 );
+end;
 
 loop
 	int shape = 1;
@@ -180,13 +236,13 @@ int shape_template = 1;
 	loop
 		int corner = 1
 	until
-		corner > 4
+		corner > arr_offset.count()
 	begin
 		
 		loop
 			int offset = 1
 		until
-			offset > 4
+			offset > arr_offset[corner].count()
 		begin
 
 			# next template
@@ -236,10 +292,12 @@ end;
 
 # Create stimulus array (for presentation)
 
-array <int> arr_degradation_levels [4] = { 0, 20, 40, 60, 80 };
+array <int> arr_degradation_levels [0];
+arr_degradation_levels.append( deg_levels );
+
 # values to be divided by 100 later
 
-array <int> arr_stimulus_variations [2][2][4][2][4][4][31][31];
+array <int> arr_stimulus_variations [2][2][4][2][4][total_offsets][31][31];
 # [local shape][luminance][degradation]...[[values stored in arr_all_temp_stimuli]]
 
 array <picture> arr_generated_stimuli [0];
@@ -279,7 +337,7 @@ begin
 					loop
 						int offset = 1
 					until
-						offset > 4
+						offset > total_offsets
 					begin
 
 						picture next_stimulus = new picture();
@@ -337,13 +395,10 @@ begin
 									# intact
 								end;
 								
-								int gap = 1;
-								int stim_size = 20;
-
 								if arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 0 then
-										next_stimulus.add_part( background_part, (h_line - 16) * stim_size + ((h_line - 16)*gap), (v_line - 16) * stim_size + ((v_line - 16)*gap) );
+										next_stimulus.add_part( background_part, (h_line - 16)*local_element_size + (h_line - 16)*gap, (v_line - 16)*local_element_size + (v_line - 16)*gap );
 								elseif arr_stimulus_variations[l_shape][luminance][degradation][g_shape][corner][offset][v_line][h_line] == 1 then
-										next_stimulus.add_part( shape_part, (h_line - 16) * stim_size + ((h_line - 16)*gap), (v_line - 16) * stim_size + ((v_line - 16)*gap) ) ;
+										next_stimulus.add_part( shape_part, (h_line - 16)*local_element_size + (h_line - 16)*gap, (v_line - 16)*local_element_size + (v_line - 16)*gap ) ;
 								end;
 								
 								h_line = h_line + 1;
@@ -378,13 +433,15 @@ end;
 
 ## STIMULI NOW ALL STORED IN AN 1-D ARRAY (arr_generated_stimuli)
 
-arr_generated_stimuli.shuffle();
+#arr_generated_stimuli.shuffle();
 
 loop
 	int i = 1
 until
 	i > arr_generated_stimuli.count()
 begin
+	term.print_line( arr_generated_stimuli.count() );
+	
 	# line for debugging
 	line_graphic line1 = new line_graphic();
 	line1.set_next_line_width( 3 );

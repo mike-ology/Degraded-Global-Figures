@@ -1,5 +1,5 @@
 <ver>21</ver>
-<efn>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images.exp</efn>
+<efn>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images.exp</efn>
 <author>MCWE</author>
 <con>
 <pause>P</pause>
@@ -41,12 +41,15 @@
 <lfn></lfn>
 </docs>
 <dp_list></dp_list>
-<dsd>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Stimuli</dsd>
+<dsd>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Stimuli</dsd>
 <dwm>1</dwm>
 <dxv>8</dxv>
 <efs>
-<filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images CODE.sce</filename>
-<filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Image Generation.sce</filename>
+<filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images CODE.sce</filename>
+<filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Image Generation.sce</filename>
+<filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_generate_prompt.pcl</filename>
+<filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_logfile_saving.pcl</filename>
+<filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_screen_scaling.pcl</filename>
 </efs>
 <exclusive_mouse>0</exclusive_mouse>
 <exp_version></exp_version>
@@ -121,7 +124,7 @@
 <idt>0</idt>
 <ilc>0</ilc>
 <ip_chans></ip_chans>
-<lfd>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Logfiles</lfd>
+<lfd>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Logfiles</lfd>
 <lnb>2</lnb>
 <lno>4</lno>
 <log>
@@ -155,7 +158,25 @@
 <out_encrypt_key></out_encrypt_key>
 <pi_list></pi_list>
 <plat>1</plat>
-<port_devices></port_devices>
+<port_devices>
+<device>
+<parameters>
+<cts>0</cts>
+<dsrin>0</dsrin>
+<dsrout>0</dsrout>
+<dtr>disable</dtr>
+<rts>disable</rts>
+<set_fifo>1</set_fifo>
+<spd></spd>
+<spp></spp>
+<spr></spr>
+<sps></sps>
+</parameters>
+<piai>COM4</piai>
+<pian>Serial Port</pian>
+<pihpn>COM4</pihpn>
+</device>
+</port_devices>
 <rdl>
 <device>
 <abs_axis>
@@ -210,53 +231,6 @@
 <name>HID Keyboard Device</name>
 </device>
 <device>
-<device_type>3</device_type>
-<dx_device_type>0</dx_device_type>
-<name>Standard 101/102-Key or Microsoft Natural PS/2 Keyboard for HP Hotkey Support</name>
-</device>
-<device>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Wheel</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<device_type>2</device_type>
-<dx_device_type>0</dx_device_type>
-<max_raw_pos>65535</max_raw_pos>
-<min_raw_pos>0</min_raw_pos>
-<name>Synaptics HID ClickPad</name>
-</device>
-<device>
 <abs_axis>
 <dead_zone>0</dead_zone>
 <max>1000</max>
@@ -299,61 +273,14 @@
 <name>HID-compliant mouse</name>
 </device>
 <device>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Wheel</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<device_type>2</device_type>
-<dx_device_type>0</dx_device_type>
-<max_raw_pos>65535</max_raw_pos>
-<min_raw_pos>0</min_raw_pos>
-<name>PS/2 Compatible Mouse</name>
+<device_type>4</device_type>
+<dx_device_type>17</dx_device_type>
+<name>Dell KB216 Wired Keyboard</name>
 </device>
 <device>
 <device_type>4</device_type>
 <dx_device_type>17</dx_device_type>
-<name>HP Wireless Button Driver</name>
-</device>
-<device>
-<device_type>4</device_type>
-<dx_device_type>17</dx_device_type>
-<name>Micr</name>
-</device>
-<device>
-<device_type>4</device_type>
-<dx_device_type>17</dx_device_type>
-<name>Micr 1</name>
+<name>Dell KB216 Wired Keyboard 1</name>
 </device>
 <device>
 <axis>
@@ -671,8 +598,25 @@
 <sfn>all_scenarios</sfn>
 </sce>
 <sce>
+<idv>
+<device_type>3</device_type>
+<dx_device_type>19</dx_device_type>
+<ibn>Space</ibn>
+<ibn>Z</ibn>
+<ibn>/</ibn>
+<idn>Keyboard</idn>
+<index>0</index>
+<index>1</index>
+<index>2</index>
+<label></label>
+<label></label>
+<label></label>
+<offset>57</offset>
+<offset>44</offset>
+<offset>53</offset>
+</idv>
 <overrides></overrides>
-<sfn>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images CODE.sce</sfn>
+<sfn>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images CODE.sce</sfn>
 </sce>
 <sct>
 <capture_device>

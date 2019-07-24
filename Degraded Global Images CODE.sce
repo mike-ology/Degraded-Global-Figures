@@ -2,21 +2,108 @@
 # HEADER #
 
 scenario = "Image Generation 2019";
-active_buttons = 0;
+active_buttons = 3;
 response_logging = log_active;
 no_logfile = true; # default logfile not created
 response_matching = simple_matching;
+default_clear_active_stimuli = true;
 default_background_color = 128, 128, 128;
 default_font = "Arial";
 default_font_size = 36;
-default_text_color = 255, 255, 255;
+default_text_color = 0, 0, 0;
 default_formatted_text = true;
 
 begin;
 
+$fixation_duration = 750;
+$exposure_duration = 300;
+$trial_duration = 3000;
+
+trial {
+	trial_duration = '$fixation_duration + $trial_duration';
+	trial_type = specific_response;
+	terminator_button = 2, 3;
+	all_responses = false;
+
+	stimulus_event {
+		picture {
+			text {
+				caption = "+";
+				font_size = 48;
+			};
+			x = 0; y = 0;
+		};
+		time = 0;
+		duration = next_picture;
+		response_active = false;
+	}event_fixation;
+	
+	stimulus_event {
+		picture {};
+		time = $fixation_duration;
+		duration = next_picture;
+		stimulus_time_in = 0;
+		stimulus_time_out = never;
+		response_active = true;
+		target_button = 2, 3;
+	}event_stimulus;
+		
+	stimulus_event {
+		picture {
+			text { 
+				caption = "?";
+				font_size = 48;
+			};
+			x = 0; y = 0;
+		};
+		time = '$fixation_duration + $exposure_duration';
+		duration = next_picture;
+		response_active = false;
+	}event_prompt;
+		
+}main_trial;
+
+
 begin_pcl;
 
-### Experimental Paramaters ### 
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# User Setup
+
+bool debug_tools = true;
+
+# User parameters for screen dimension
+# Enter desired screen dimensions. Screens not set to these dimensions may be scaled
+double req_screen_x = 1920.0;
+double req_screen_y = 1080.0;
+bool attempt_scaling_procedure = false;
+
+# User parameters for logfile generation
+# If filename already exists, a new file is created with an appended number
+# Logfile may be optionally created on local disk (when running from network location)
+string local_path = "C:/Presentation Output/Degraded Global Figures 2019/";
+string filename_prefix = "DGF - Participant ";
+string use_local_save = parameter_manager.get_string( "Use Local Save", "NO" );
+
+#######################
+
+# Load PCL code and subroutines from other files
+include "sub_generate_prompt.pcl";
+include "sub_screen_scaling.pcl";
+include "sub_logfile_saving.pcl";
+
+# Run start-up subroutines
+if attempt_scaling_procedure == true then screen_check() else end;
+create_logfile();
+	# subroutine creates empty text file labelled "log"
+
+
+# Setup complete
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+### Experimental Parameters ### 
 
 	# Size of local elements (effects overall stimulus size)
 	double local_element_size = 20.0;
@@ -35,13 +122,42 @@ begin_pcl;
 	int unique_trials = 32 * total_offsets * deg_levels.count();
 	
 	# Number of unique blocks (should be a factor of 32)
-	int max_blocks = 1;
+	int max_blocks = 2;
 	
 	# !! Calculate manually, no need to change
 	int trials_per_block = unique_trials/max_blocks;
 	
 	# Repetitions / Loops - for smaller numbers of unique trials, may want to repeat to increase experiment length
-	int block_reps = 1;
+	int max_reps = 1;
+
+#################################################################
+# Setup logfile
+# Logfile Header	
+log.print("Degraded Global Figures Task\n");
+log.print("Participant ");
+log.print( participant );
+log.print("\n");
+log.print( date_time() );
+log.print("\n");
+log.print( "Scale factor: " + string( scale_factor ) );
+log.print("\n");
+log.print( "Exposure time: " + string( parameter_manager.get_int( "Trial Duration", 1000 ) ) );
+log.print("\n\n");
+
+# Data Table Header	
+log.print( "rep" ); log.print( "\t" );
+log.print( "block" ); log.print( "\t" );
+log.print( "trial" ); log.print( "\t" );
+log.print( "glob" ); log.print( "\t" );
+log.print( "loc" ); log.print( "\t" );
+log.print( "lum" ); log.print( "\t" );
+log.print( "corn" ); log.print( "\t" );
+log.print( "offset" ); log.print( "\t" );
+log.print( "degrad" ); log.print( "\t" );
+log.print( "|" ); log.print( "\t" );
+log.print( "RT" ); log.print( "\t" );
+log.print( "resp" ); log.print( "\t" );
+log.print( "rslt" ); log.print( "\n" );
 
 #################################################################
 # Load local parts into an array for later global figure creation
@@ -182,8 +298,6 @@ begin
 	arr_temp_stimulus[i].append( arr_temp_zero );
 	i = i + 1;
 end;
-
-#term.print_line( arr_temp_stimulus );
 
 array <int> arr_offset [0][0][0];
 
@@ -433,57 +547,131 @@ end;
 
 ## STIMULI NOW ALL STORED IN AN 1-D ARRAY (arr_generated_stimuli)
 
-#arr_generated_stimuli.shuffle();
+### ACTUALLY PRESENT TRIALS ###
 
 loop
-	int i = 1
+	int repetition = 1
 until
-	i > arr_generated_stimuli.count()
+	repetition > max_reps
 begin
-	term.print_line( arr_generated_stimuli.count() );
-	
-	# line for debugging
-	line_graphic line1 = new line_graphic();
-	line1.set_next_line_width( 3 );
-	line1.set_next_line_color( 255, 0, 0, 255 );
-	line1.add_line( 0, 400, 0, -400 );
-	line1.add_line( -400, 0, 400, 0 );
-	line1.redraw();
-	#arr_generated_stimuli[i].add_part( line1, 0, 0 );
 
-	array <string> stim_info [6];
-	arr_generated_stimuli[i].description().split( ";", stim_info );
-	
-	string global_shape;
-	string local_shape;
-	string luminance;
-	string corner;
-	string edge_offset = stim_info[6];
-	string degradation = stim_info[3];
+	int i = 1;
+	arr_generated_stimuli.shuffle();
 
-	if stim_info[4] == "1" then global_shape = "circle" elseif stim_info[4] == "2" then global_shape = "diamond"; end;
-	if stim_info[1] == "1" then local_shape = "circle" elseif stim_info[1] == "2" then local_shape = "diamond"; end;
-	if stim_info[2] == "1" then luminance = "dark-on-light" elseif stim_info[2] == "2" then luminance = "light-on-dark"; end;
-	if stim_info[5] == "1" then 
-		corner = "bottom left"
-	elseif stim_info[5] == "2" then 
-		corner = "bottom right";
-	elseif stim_info[5] == "top left" then 
-		corner = "3";
-	elseif stim_info[5] == "top right" then 
-		corner = "4";
+	loop
+		int block = 1
+	until
+		block > max_blocks
+	begin
+
+		loop
+			int h = 1;
+		until
+			h > trials_per_block
+		begin
+			array <string> stim_info [6];
+			arr_generated_stimuli[i].description().split( ";", stim_info );
+			
+			string global_shape;
+			string local_shape;
+			string luminance;
+			string corner;
+			string edge_offset = stim_info[6];
+			string degradation = stim_info[3];
+
+			if debug_tools == true then
+				line_graphic line1 = new line_graphic();
+				line1.set_next_line_width( 3 );
+				line1.set_next_line_color( 255, 0, 0, 255 );
+				line1.add_line( 0, 400, 0, -400 );
+				line1.add_line( -400, 0, 400, 0 );
+				line1.redraw();
+				arr_generated_stimuli[i].add_part( line1, 0, 0 );
+
+				text text1 = new text();
+				text text2 = new text();
+				text1.set_caption( "Global shape: " + global_shape + " - " + "Local shape: " + local_shape + " - " + "Luminance: " + luminance, true);
+				text2.set_caption( "Corner: " + corner + " - " + "Edge Offset: " + edge_offset + " - " + "Degration Level: " + degradation, true);
+				arr_generated_stimuli[i].add_part( text1, 0, 480 );
+				arr_generated_stimuli[i].add_part( text2, 0, 420 );
+			else
+			end;
+
+			if stim_info[4] == "1" then global_shape = "circle" elseif stim_info[4] == "2" then global_shape = "diamond"; end;
+			if stim_info[1] == "1" then local_shape = "circle" elseif stim_info[1] == "2" then local_shape = "diamond"; end;
+			if stim_info[2] == "1" then luminance = "dark-on-light" elseif stim_info[2] == "2" then luminance = "light-on-dark"; end;
+			if stim_info[5] == "1" then 
+				corner = "bottom left"
+			elseif stim_info[5] == "2" then 
+				corner = "bottom right";
+			elseif stim_info[5] == "top left" then 
+				corner = "3";
+			elseif stim_info[5] == "top right" then 
+				corner = "4";
+			end;
+
+			
+			event_stimulus.set_stimulus( arr_generated_stimuli[i] );
+			main_trial.present();
+			
+			log.print( repetition ); log.print( "\t" );
+			log.print( block ); log.print( "\t" );
+			log.print( h ); log.print( "\t" );
+			log.print( global_shape ); log.print( "\t" );
+			log.print( local_shape ); log.print( "\t" );
+			log.print( luminance ); log.print( "\t" );
+			log.print( corner ); log.print( "\t" );
+			log.print( edge_offset ); log.print( "\t" );
+			log.print( degradation ); log.print( "\t" );
+			log.print( "|" ); log.print( "\t" );
+			log.print( "RT" ); log.print( "\t" );
+			log.print( "resp" ); log.print( "\t" );
+			log.print( "rslt" ); log.print( "\n" );
+
+			h = h + 1;
+			i = i + 1;
+		end;
+
+		# End of block message
+		if block != max_blocks || repetition != max_reps then
+			create_new_prompt( 1 );
+			prompt_trial.set_duration( forever );
+			prompt_message.set_caption( "End of Block " + string(block + (repetition-1)*max_blocks) + "/" + string(repetition*max_blocks) + ".\n\nTake a short break and continue\nwhen ready", true );
+			mid_button_text.set_caption( "Press " + response_manager.button_name( 1, false, true ) + " to begin next block", true );
+			prompt_trial.present();
+		else
+		end;
+		
+		block = block + 1;
 	end;
 
-	text text1 = new text();
-	text text2 = new text();
-	text1.set_caption( "Global shape: " + global_shape + " - " + "Local shape: " + local_shape + " - " + "Luminance: " + luminance, true);
-	text2.set_caption( "Corner: " + corner + " - " + "Edge Offset: " + edge_offset + " - " + "Degration Level: " + degradation, true);
-	arr_generated_stimuli[i].add_part( text1, 0, 480 );
-	arr_generated_stimuli[i].add_part( text2, 0, 420 );
-	
-	
-	arr_generated_stimuli[i].present();
-	#display_device.screenshot( string(i) + ".bmp" );
-	wait_interval(2500);
-	i = i + 1;
+	repetition = repetition + 1;
 end;
+
+#########################################################
+# Subroutine to copy logfile back to the default location
+# Requires the strings associated with:
+#	[1] the local file path
+#	[2] the file name
+#	[3] if save operation is to be performed ("YES"/"NO") 
+
+bool copy_success = sub_save_to_network( local_path, filename, use_local_save );	
+
+if copy_success == true then
+	prompt_message.set_caption( "End of experiment! Thank you!\n\nPlease notify the experimenter.\n\n<font color = '0,255,0'>LOGFILE WAS SAVED TO DEFAULT LOCATION</font>", true )
+elseif copy_success == false then
+	prompt_message.set_caption( "End of experiment! Thank you!\n\nPlease notify the experimenter.\n\n<font color = '255,0,0'>LOGFILE WAS SAVED TO:\n</font>" + local_path, true );
+else
+end;
+
+#########################################################
+create_new_prompt( 1 );
+
+if parameter_manager.configuration_name() == "Mobile / Touchscreen" then
+	mid_button_text.set_caption( "CLOSE PROGRAM", true );
+else
+	mid_button_text.set_caption( "CLOSE PROGRAM [" + response_manager.button_name( 1, false, true ) + "]", true );
+end;
+
+prompt_trial.present();
+

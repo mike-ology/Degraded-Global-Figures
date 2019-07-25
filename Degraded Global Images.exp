@@ -51,7 +51,7 @@
 <filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_logfile_saving.pcl</filename>
 <filename>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_screen_scaling.pcl</filename>
 </efs>
-<exclusive_mouse>0</exclusive_mouse>
+<exclusive_mouse>1</exclusive_mouse>
 <exp_version></exp_version>
 <exparam>
 <man>
@@ -158,25 +158,7 @@
 <out_encrypt_key></out_encrypt_key>
 <pi_list></pi_list>
 <plat>1</plat>
-<port_devices>
-<device>
-<parameters>
-<cts>0</cts>
-<dsrin>0</dsrin>
-<dsrout>0</dsrout>
-<dtr>disable</dtr>
-<rts>disable</rts>
-<set_fifo>1</set_fifo>
-<spd></spd>
-<spp></spp>
-<spr></spr>
-<sps></sps>
-</parameters>
-<piai>COM4</piai>
-<pian>Serial Port</pian>
-<pihpn>COM4</pihpn>
-</device>
-</port_devices>
+<port_devices></port_devices>
 <rdl>
 <device>
 <abs_axis>

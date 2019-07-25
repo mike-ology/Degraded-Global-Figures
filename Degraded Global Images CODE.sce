@@ -70,7 +70,7 @@ begin_pcl;
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # User Setup
 
-bool debug_tools = true;
+bool debug_tools = false;
 
 # User parameters for screen dimension
 # Enter desired screen dimensions. Screens not set to these dimensions may be scaled
@@ -130,6 +130,41 @@ create_logfile();
 	# Repetitions / Loops - for smaller numbers of unique trials, may want to repeat to increase experiment length
 	int max_reps = 1;
 
+
+#################################################################
+# Assign response keys
+
+int last_dig;
+int key_mapping;
+int key1;
+int key2;
+string stim1;
+string stim2;
+
+if logfile.subject() == "" then
+	participant = "NULL 999";
+	last_dig = int ("NULL 999".substring("NULL 999".count(), 1 ) );
+else
+	last_dig = int (logfile.subject().substring( logfile.subject().count(), 1 ) );
+end;
+
+if	last_dig == 0 || last_dig == 2 || last_dig == 4 || last_dig == 6 || last_dig == 8 then
+	key_mapping = 1;
+	key1 = 2; 
+	key2 = 3;
+	stim1 = "circle";
+	stim2 = "diamond";
+elseif last_dig == 1 || last_dig == 3 || last_dig == 5 || last_dig == 7 || last_dig == 9 then
+	key_mapping = 2;
+	key1 = 3;
+	key2 = 2;
+	stim1 = "diamond";
+	stim2 = "circle";
+else
+	exit( "ERROR: Participant number did not end in a digit. Unable to calculate mapping." );
+end;
+
+
 #################################################################
 # Setup logfile
 # Logfile Header	
@@ -156,7 +191,8 @@ log.print( "offset" ); log.print( "\t" );
 log.print( "degrad" ); log.print( "\t" );
 log.print( "|" ); log.print( "\t" );
 log.print( "RT" ); log.print( "\t" );
-log.print( "resp" ); log.print( "\t" );
+log.print( "R.Code" ); log.print( "\t" );
+log.print( "R.Key" ); log.print( "\t" );
 log.print( "rslt" ); log.print( "\n" );
 
 #################################################################
@@ -523,8 +559,6 @@ begin
 						
 						next_stimulus.set_description( string(l_shape)+";"+string(luminance)+";"+string(arr_degradation_levels[degradation])+";"+string(g_shape)+";"+string(corner)+";"+string(offset) );
 						arr_generated_stimuli.add( next_stimulus );
-						#next_stimulus.present();
-						#wait_interval(2000);
 
 						offset = offset + 1;
 					end;
@@ -597,22 +631,52 @@ begin
 			else
 			end;
 
-			if stim_info[4] == "1" then global_shape = "circle" elseif stim_info[4] == "2" then global_shape = "diamond"; end;
-			if stim_info[1] == "1" then local_shape = "circle" elseif stim_info[1] == "2" then local_shape = "diamond"; end;
-			if stim_info[2] == "1" then luminance = "dark-on-light" elseif stim_info[2] == "2" then luminance = "light-on-dark"; end;
+			if stim_info[4] == "1" then global_shape = "circ." elseif stim_info[4] == "2" then global_shape = "diam."; end;
+			if stim_info[1] == "1" then local_shape = "circ." elseif stim_info[1] == "2" then local_shape = "diam."; end;
+			if stim_info[2] == "1" then luminance = "d-on-l" elseif stim_info[2] == "2" then luminance = "l-on-d"; end;
 			if stim_info[5] == "1" then 
-				corner = "bottom left"
+				corner = "bot l."
 			elseif stim_info[5] == "2" then 
-				corner = "bottom right";
-			elseif stim_info[5] == "top left" then 
-				corner = "3";
-			elseif stim_info[5] == "top right" then 
-				corner = "4";
+				corner = "bot r.";
+			elseif stim_info[5] == "3" then 
+				corner = "top l.";
+			elseif stim_info[5] == "4" then 
+				corner = "top r.";
 			end;
-
 			
 			event_stimulus.set_stimulus( arr_generated_stimuli[i] );
 			main_trial.present();
+
+			stimulus_data last_stimulus = stimulus_manager.last_stimulus_data();
+			int reaction_time = last_stimulus.reaction_time();
+			term.print_line( reaction_time );
+			
+			int last_response_code;
+			string last_response_key;
+			int is_correct;
+			
+			if reaction_time <= 0 then
+				# no response
+				last_response_code = 0;
+				last_response_key = "NONE";
+			else
+				last_response_code = response_manager.last_response();
+				last_response_key = response_manager.last_response_label();
+			end;
+			
+			if key_mapping == 1 then
+				if (last_response_code == 2 && global_shape == "circ.") || ( last_response_code == 3 && global_shape == "diam." ) then
+					is_correct = 1;
+				else
+				end;
+			elseif key_mapping == 2 then
+				if (last_response_code == 3 && global_shape == "circ.") || ( last_response_code == 2 && global_shape == "diam." ) then
+					is_correct = 1;
+				else
+				end;
+			else
+				is_correct = 0;
+			end;
 			
 			log.print( repetition ); log.print( "\t" );
 			log.print( block ); log.print( "\t" );
@@ -624,9 +688,10 @@ begin
 			log.print( edge_offset ); log.print( "\t" );
 			log.print( degradation ); log.print( "\t" );
 			log.print( "|" ); log.print( "\t" );
-			log.print( "RT" ); log.print( "\t" );
-			log.print( "resp" ); log.print( "\t" );
-			log.print( "rslt" ); log.print( "\n" );
+			log.print( reaction_time ); log.print( "\t" );
+			log.print( last_response_code ); log.print( "\t" );
+			log.print( last_response_key ); log.print( "\t" );
+			log.print( is_correct ); log.print( "\n" );
 
 			h = h + 1;
 			i = i + 1;

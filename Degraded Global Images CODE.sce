@@ -94,9 +94,10 @@ include "sub_logfile_saving.pcl";
 
 # Run start-up subroutines
 if attempt_scaling_procedure == true then screen_check() else end;
+	# returns double scale_factor ( default: 1.0 ) which should be applied to graphics
+	
 create_logfile();
 	# subroutine creates empty text file labelled "log"
-
 
 # Setup complete
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -106,17 +107,17 @@ create_logfile();
 ### Experimental Parameters ### 
 
 	# Size of local elements (effects overall stimulus size)
-	double local_element_size = 20.0;
+	double local_element_size = 21.0 * scale_factor;
 
 	# Size of gab between local elements (effects overall stimulus size)
-	int gap = 1;
+	int gap = 1 * int(scale_factor);
 
 	# Number of offsets to be used for each corner (ranges from 1-4)
 	int total_offsets = 1;
 	
 	# Degradation levels - Enter integers ranging from 0 - 100 (no degradation to 100% degradation (i.e. random))
 	# Note! Make sure array size is declared correctly!
-	array <int> deg_levels [1] = { 50 };
+	array <int> deg_levels [3] = { 0, 33, 66 };
 	
 	# !! Calculate manually, no need to change
 	int unique_trials = 32 * total_offsets * deg_levels.count();
@@ -129,6 +130,10 @@ create_logfile();
 	
 	# Repetitions / Loops - for smaller numbers of unique trials, may want to repeat to increase experiment length
 	int max_reps = 1;
+
+	# Include short practice block
+	bool run_practice = true;
+	int max_practice_trials = 15;
 
 
 #################################################################
@@ -194,6 +199,85 @@ log.print( "RT" ); log.print( "\t" );
 log.print( "R.Code" ); log.print( "\t" );
 log.print( "R.Key" ); log.print( "\t" );
 log.print( "rslt" ); log.print( "\n" );
+
+#################################################################
+# Instruction Screens - Create and Present
+
+bitmap example1 = new bitmap( "Instruction Examples/example1.bmp" );
+bitmap example2 = new bitmap( "Instruction Examples/example2.bmp" );
+bitmap example3 = new bitmap( "Instruction Examples/example3.bmp" );
+example1.set_load_size( 0, 0, 0.5 * scale_factor );
+example2.set_load_size( 0, 0, 0.5 * scale_factor );
+example3.set_load_size( 0, 0, 0.5 * scale_factor );
+example1.load();
+example2.load();
+example3.load();
+
+loop
+	int instruct_screen = 1;
+until
+	instruct_screen > 4
+begin
+
+	if instruct_screen == 1 then
+		create_new_prompt(1);
+		prompt_message.set_caption( "In this task, you will view images of large circles and diamonds\nthat are created from smaller circles and diamonds.", true );
+		prompt_pic.set_part_y( 1, 300 * scale_factor );
+		prompt_pic.add_part( example1, 0, 0 );
+		mid_button_text.set_caption( "NEXT [/]", true );
+		prompt_trial.set_terminator_button ( 3 );
+		
+	elseif instruct_screen == 2 then
+		create_new_prompt(2);
+		prompt_message.set_caption( "Sometimes the larger shape will be clear and easy to see, but other times\nit will be 'fragmented' and will be difficult to see.", true );
+		prompt_pic.set_part_y( 1, 300 * scale_factor );
+		prompt_pic.add_part( example1, -400 * scale_factor, 0 );
+		prompt_pic.add_part( example2, 0 * scale_factor, 0 );
+		prompt_pic.add_part( example3, 400 * scale_factor, 0 );
+		left_button_text.set_caption( "BACK [Z]", true );
+		right_button_text.set_caption( "NEXT [/]", true );
+		prompt_trial.set_terminator_buttons (  { 2, 3 } );
+
+	elseif instruct_screen == 3 then
+		create_new_prompt(2);
+		prompt_message.set_caption( "Your task is to decide what shape you think the larger shape is while ignoring\nthe smaller shapes.\n\n<b>You must make your responses quickly AND accurately</b>.\n\nIf you think the larger shape is a " + stim1 + ", press the " + response_manager.button_name( key1, false, true ) + " key.\nIf you think the larger shape is a " + stim2 + ", press the " + response_manager.button_name( key2, false, true ) + " key.", true );
+		left_button_text.set_caption( "BACK [Z]", true );
+		right_button_text.set_caption( "NEXT [/]", true );
+		prompt_trial.set_terminator_buttons (  { 2, 3 } );
+
+	elseif instruct_screen == 4 then
+		create_new_prompt(2);
+		if parameter_manager.get_string( "Practice Trials", "YES" ) == "YES" then
+			prompt_message.set_caption( "Remember, try to make your responses as quickly as possible.\n\nThere will be opportunities for short breaks though-out the task\n\nAre you read to start some practice trials?", true );
+		else
+			prompt_message.set_caption( "Remember, try to make your responses as quickly as possible.\n\nThere will be opportunities for short breaks though-out the task\n\nAre you read to begin?", true );
+		end;
+		
+		left_button_text.set_caption( "BACK [Z]", true );
+		right_button_text.set_caption( "READY! [/]", true );
+		prompt_trial.set_terminator_buttons (  { 2, 3 } );
+	end;
+
+	prompt_trial.present();
+
+	int response_key = response_manager.last_response();
+	
+	if instruct_screen == 1 && ( response_key == 2 || response_key == 3 ) then
+		instruct_screen = instruct_screen + 1
+	elseif response_key == 3 then
+		instruct_screen = instruct_screen + 1;
+	elseif response_key == 2 then
+		instruct_screen = instruct_screen - 1;
+		if instruct_screen == 0 then instruct_screen = 1
+		else end;
+	else
+	end;
+
+end;
+
+example1.unload();
+example2.unload();
+example3.unload();
 
 #################################################################
 # Load local parts into an array for later global figure creation
@@ -593,7 +677,12 @@ begin
 	arr_generated_stimuli.shuffle();
 
 	loop
-		int block = 1
+		int block;
+		if run_practice == true then
+			block = 0;
+		else
+			block = 1
+		end;
 	until
 		block > max_blocks
 	begin
@@ -646,10 +735,11 @@ begin
 			
 			event_stimulus.set_stimulus( arr_generated_stimuli[i] );
 			main_trial.present();
+			#arr_generated_stimuli[i].present();
+			#display_device.screenshot( "screenshot " + string(i) + ".bmp" );
 
 			stimulus_data last_stimulus = stimulus_manager.last_stimulus_data();
 			int reaction_time = last_stimulus.reaction_time();
-			term.print_line( reaction_time );
 			
 			int last_response_code;
 			string last_response_key;
@@ -678,23 +768,68 @@ begin
 				is_correct = 0;
 			end;
 			
-			log.print( repetition ); log.print( "\t" );
-			log.print( block ); log.print( "\t" );
-			log.print( h ); log.print( "\t" );
-			log.print( global_shape ); log.print( "\t" );
-			log.print( local_shape ); log.print( "\t" );
-			log.print( luminance ); log.print( "\t" );
-			log.print( corner ); log.print( "\t" );
-			log.print( edge_offset ); log.print( "\t" );
-			log.print( degradation ); log.print( "\t" );
-			log.print( "|" ); log.print( "\t" );
-			log.print( reaction_time ); log.print( "\t" );
-			log.print( last_response_code ); log.print( "\t" );
-			log.print( last_response_key ); log.print( "\t" );
-			log.print( is_correct ); log.print( "\n" );
+			if run_practice == false then
+				# log trial data
+				log.print( repetition ); log.print( "\t" );
+				log.print( block ); log.print( "\t" );
+				log.print( h ); log.print( "\t" );
+				log.print( global_shape ); log.print( "\t" );
+				log.print( local_shape ); log.print( "\t" );
+				log.print( luminance ); log.print( "\t" );
+				log.print( corner ); log.print( "\t" );
+				log.print( edge_offset ); log.print( "\t" );
+				log.print( degradation ); log.print( "\t" );
+				log.print( "|" ); log.print( "\t" );
+				log.print( reaction_time ); log.print( "\t" );
+				log.print( last_response_code ); log.print( "\t" );
+				log.print( last_response_key ); log.print( "\t" );
+				log.print( is_correct ); log.print( "\n" );
+			elseif run_practice == true then
+				# present feedback
+				picture feedback_pic = new picture();
+				text feedback_text = new text();
+				if is_correct == 0 then
+					feedback_text.set_caption( "WRONG!", true );
+				else
+					feedback_text.set_caption( "CORRECT!", true );
+				end;
+				feedback_pic.add_part( feedback_text, 0, 0 );
+				feedback_pic.present();
+				wait_interval( 1000 );
+					
+			end;
 
 			h = h + 1;
 			i = i + 1;
+			
+			# Practice block finished - let participant decide whether to repeat or continue
+			if run_practice == true && h > max_practice_trials then
+
+				create_new_prompt( 2 );
+				prompt_message.set_caption( "Practice Over!\n\nAre you ready to begin the main trials,\nor do you want to complete another practice block?", true );
+				left_button_text.set_caption( "Practice more... [Z]", true );
+				right_button_text.set_caption( "Ready! [/]", true );
+				prompt_trial.set_terminator_buttons( { 2, 3 } );
+			
+				prompt_trial.present();
+
+				# reset stimulus array for next practice / start of real trials
+				arr_generated_stimuli.shuffle();
+				h = 1;
+				i = 1;
+				
+				if response_manager.last_response() == 2  then
+					# go to start of loop without increasing block counter to 1 (keep at 0)
+					continue;
+				elseif response_manager.last_response() == 3 then
+					# disable practice flag
+					block = 1;
+					run_practice = false;
+				end;
+							
+			end;
+			
+			# next trial
 		end;
 
 		# End of block message

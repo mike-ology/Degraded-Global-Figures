@@ -30,11 +30,11 @@
 <depchg>1</depchg>
 <discard_windows_messages>0</discard_windows_messages>
 <display_status_window>1</display_status_window>
-<dmd>0</dmd>
-<dmh>0</dmh>
-<dmr>1</dmr>
-<dmrf>1</dmrf>
-<dmw>0</dmw>
+<dmd>32</dmd>
+<dmh>1080</dmh>
+<dmr>60</dmr>
+<dmrf>60</dmrf>
+<dmw>1920</dmw>
 <docs>
 <args></args>
 <exfl></exfl>
@@ -580,7 +580,7 @@
 <sfn>all_scenarios</sfn>
 </sce>
 <sce>
-<idv>
+<abd>
 <device_type>3</device_type>
 <dx_device_type>19</dx_device_type>
 <ibn>Space</ibn>
@@ -590,13 +590,13 @@
 <index>0</index>
 <index>1</index>
 <index>2</index>
-<label></label>
-<label></label>
-<label></label>
+<label>Space</label>
+<label>Z</label>
+<label>/</label>
 <offset>57</offset>
 <offset>44</offset>
 <offset>53</offset>
-</idv>
+</abd>
 <overrides></overrides>
 <sfn>D:\Personal\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\Degraded Global Images CODE.sce</sfn>
 </sce>

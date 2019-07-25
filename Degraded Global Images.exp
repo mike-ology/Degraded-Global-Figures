@@ -66,7 +66,56 @@
 <ss>0</ss>
 </r>
 <ss>
-<sd></sd>
+<sd>
+<val>
+<dat>
+<val>21.0</val>
+</dat>
+<id>0</id>
+</val>
+<val>
+<dat>
+<val>1</val>
+</dat>
+<id>1</id>
+</val>
+<val>
+<dat>
+<val>2</val>
+</dat>
+<id>2</id>
+</val>
+<val>
+<dat>
+<val>[20, 40, 60, 80]</val>
+</dat>
+<id>3</id>
+</val>
+<val>
+<dat>
+<val>1</val>
+</dat>
+<id>4</id>
+</val>
+<val>
+<dat>
+<val>1</val>
+</dat>
+<id>5</id>
+</val>
+<val>
+<dat>
+<val>15</val>
+</dat>
+<id>6</id>
+</val>
+<val>
+<dat>
+<val>4</val>
+</dat>
+<id>7</id>
+</val>
+</sd>
 <sid>-1</sid>
 </ss>
 </dcfg>
@@ -75,13 +124,154 @@
 <dl>
 <grps>
 <grp>
-<gn></gn>
-<pl></pl>
+<gn>Stimulus Characteristics</gn>
+<pl>
+<pid>3</pid>
+<pid>2</pid>
+</pl>
+</grp>
+<grp>
+<gn>Practice Trials, Regular Trials, and Block Length</gn>
+<pl>
+<pid>7</pid>
+<pid>4</pid>
+<pid>5</pid>
+<pid>6</pid>
+</pl>
+</grp>
+<grp>
+<gn>Stimulus Sizing</gn>
+<pl>
+<pid>0</pid>
+<pid>1</pid>
+</pl>
 </grp>
 </grps>
 </dl>
 <parms>
-<parms></parms>
+<parms>
+<parm>
+<id>0</id>
+<set>
+<desc>Size of local elements (effects overall stimulus size)</desc>
+<edit>0</edit>
+<name>Local Element Size</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>double</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>1</id>
+<set>
+<desc>Size of gap between local elements. 0 = elements alongside each other, 1+ creates gap or 'outline' around each element (similar to original stimuli)</desc>
+<edit>0</edit>
+<name>Gap</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>2</id>
+<set>
+<desc>Affects total number of trials. Must be a value of 1, 2, 3, or 4. A value of 3 means that the global element may appear at 3 different positions in each corner (i.e. at the corner, one local element towards centre, two local elements torward centre). A value of 5 (not used) would be exactly in the center.</desc>
+<edit>1</edit>
+<name>Corner Offsets</name>
+<set>
+<rest>[1, 4]</rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>3</id>
+<set>
+<desc>Affects total number of trials.
+
+Enter a 1D array of values ranging from 0-100 (no degradation to 100% degradation (i.e. totally random)).
+
+Syntax is... [0, 10, 90, 100]</desc>
+<edit>1</edit>
+<name>Degradation Levels</name>
+<set>
+<dim>1</dim>
+<rest>[0, 100]</rest>
+</set>
+<temp>0</temp>
+<type>int_array</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>4</id>
+<set>
+<desc>Number of times each unique trial is presented. Useful if the total number of trials is low and stimuli must be repeated to increase the number of trials. Each unique trial will be presented before repetitions occur.</desc>
+<edit>1</edit>
+<name>Maximum Repetitions</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>5</id>
+<set>
+<desc>Include a short block of practice trials with feedback prior to the experimental trials (optional)</desc>
+<edit>1</edit>
+<name>Run Practice Trials</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>bool</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>6</id>
+<set>
+<desc>Number of practice trials to present before allowing participant to continue with the study (or choose to practice further). No effect if practice block not included.</desc>
+<edit>1</edit>
+<name>Practice Block Size</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>7</id>
+<set>
+<desc>Number of unique blocks to run ( * must be a factor or multiple of 32). A break will be inserted at the end of every block. Higher values are suggested to be used as stimulus variations (i.e. offsets and degradation levels) increase.
+
+Calculate how many unique trials exist to decide how many blocks are required. 
+
+*** # Unique trials = 32 * Corner Offsets * # Degradation Levels selected ***</desc>
+<edit>1</edit>
+<name>Maximum Blocks</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+</parms>
 <ssl></ssl>
 </parms>
 <pass></pass>

@@ -106,38 +106,46 @@ create_logfile();
 
 ### Experimental Parameters ### 
 
-	# Size of local elements (effects overall stimulus size)
-	double local_element_size = 21.0 * scale_factor;
+	# These parameters are set in the Experiment Parameter Window prior to running the experiment
+	# Default values have been included to ensure the experiment runs if values are missing (or if
+	# the experiment was initiated from the editor).
 
+	# Size of local elements (effects overall stimulus size)
+	double local_element_size = parameter_manager.get_double( "Local Element Size", 21.0 ) * scale_factor;
+	
 	# Size of gab between local elements (effects overall stimulus size)
-	int gap = 1 * int(scale_factor);
+	int gap = parameter_manager.get_int( "Gap", 1 ) * int(scale_factor);
 
 	# Number of offsets to be used for each corner (ranges from 1-4)
-	int total_offsets = 1;
+	int total_offsets = parameter_manager.get_int( "Corner Offsets", 2 );
 	
 	# Degradation levels - Enter integers ranging from 0 - 100 (no degradation to 100% degradation (i.e. random))
 	# Note! Make sure array size is declared correctly!
-	array <int> deg_levels [3] = { 0, 33, 66 };
-	
-	# !! Calculate manually, no need to change
-	int unique_trials = 32 * total_offsets * deg_levels.count();
+	array <int> deg_levels [4] = { 20, 40, 60, 80 }; # note - used if nothing specified in parameter window
+	parameter_manager.get_ints( "Degradation Levels", deg_levels, false );
 	
 	# Number of unique blocks (should be a factor of 32)
-	int max_blocks = 2;
-	
-	# !! Calculate manually, no need to change
-	int trials_per_block = unique_trials/max_blocks;
+	int max_blocks = parameter_manager.get_int( "Maximum Blocks", 4 );
 	
 	# Repetitions / Loops - for smaller numbers of unique trials, may want to repeat to increase experiment length
-	int max_reps = 1;
+	int max_reps = parameter_manager.get_int( "Maximum Repetitions", 1 );
 
 	# Include short practice block
-	bool run_practice = true;
-	int max_practice_trials = 15;
+	bool run_practice = parameter_manager.get_bool( "Run Practice Trials", true );
+	int max_practice_trials = parameter_manager.get_int( "Practice Block Size", 15 );
 
+	# These values are calculated automatically from previously entered value. However, it would
+	# be a good idea to check their values to ensure the number of trials generated is appropriate
+	# for the study.
+		
+	int unique_trials = 32 * total_offsets * deg_levels.count();
+	int trials_per_block = unique_trials/max_blocks;
+	
 
 #################################################################
-# Assign response keys
+# Assign stimulus response mapping based on participant ID
+# Note: instructions are response coding are updated to reflect
+# the response mapping accordingly.
 
 int last_dig;
 int key_mapping;
@@ -247,7 +255,7 @@ begin
 
 	elseif instruct_screen == 4 then
 		create_new_prompt(2);
-		if parameter_manager.get_string( "Practice Trials", "YES" ) == "YES" then
+		if run_practice == true then
 			prompt_message.set_caption( "Remember, try to make your responses as quickly as possible.\n\nThere will be opportunities for short breaks though-out the task\n\nAre you read to start some practice trials?", true );
 		else
 			prompt_message.set_caption( "Remember, try to make your responses as quickly as possible.\n\nThere will be opportunities for short breaks though-out the task\n\nAre you read to begin?", true );
@@ -263,7 +271,7 @@ begin
 	int response_key = response_manager.last_response();
 	
 	if instruct_screen == 1 && ( response_key == 2 || response_key == 3 ) then
-		instruct_screen = instruct_screen + 1
+		instruct_screen = instruct_screen + 1;
 	elseif response_key == 3 then
 		instruct_screen = instruct_screen + 1;
 	elseif response_key == 2 then

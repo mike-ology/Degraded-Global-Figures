@@ -1,7 +1,19 @@
 
+# Version: 1.0.0
+# Date: July 2019
+# Author: MCW English
+
+# This scenario creates and presents degraded global images of circles and squares
+# generated from user parameters set in the parameter window. The original concept
+# for these images is described in the paper below:
+
+# Huberle, E., & Karnath, H. O. (2012). The role of temporo-parietal junction (TPJ) 
+# in global Gestalt perception. Brain Structure and Function, 217(3), 735–746. 
+# https://doi.org/10.1007/s00429-011-0369-y
+
 # HEADER #
 
-scenario = "Image Generation 2019";
+scenario = "Degraded Global Images 2019";
 active_buttons = 3;
 response_logging = log_active;
 no_logfile = true; # default logfile not created
@@ -72,11 +84,11 @@ begin_pcl;
 
 bool debug_tools = false;
 
-# User parameters for screen dimension
-# Enter desired screen dimensions. Screens not set to these dimensions may be scaled
+# Parameters for screen dimension. !! Do not change.
+# Screens not set to these dimensions may be scaled.
 double req_screen_x = 1920.0;
 double req_screen_y = 1080.0;
-bool attempt_scaling_procedure = false;
+bool attempt_scaling_procedure = parameter_manager.get_bool( "Screen Check", true );
 
 # User parameters for logfile generation
 # If filename already exists, a new file is created with an appended number
@@ -180,6 +192,7 @@ end;
 
 #################################################################
 # Setup logfile
+
 # Logfile Header	
 log.print("Degraded Global Figures Task\n");
 log.print("Participant ");
@@ -512,7 +525,6 @@ int shape_template = 1;
 					else
 					end;
 					
-					#term.print_line( string(shape) + "\t" + string(corner) + "\t" + string(offset) + "\t" + string(v_line) + "\t" + string(h_line) );
 					h_line = h_line + 1;
 				end;
 				
@@ -878,4 +890,3 @@ create_new_prompt( 1 );
 mid_button_text.set_caption( "CLOSE PROGRAM [" + response_manager.button_name( 1, false, true ) + "]", true );
 
 prompt_trial.present();
-

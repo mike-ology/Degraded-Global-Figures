@@ -875,11 +875,7 @@ end;
 #########################################################
 create_new_prompt( 1 );
 
-if parameter_manager.configuration_name() == "Mobile / Touchscreen" then
-	mid_button_text.set_caption( "CLOSE PROGRAM", true );
-else
-	mid_button_text.set_caption( "CLOSE PROGRAM [" + response_manager.button_name( 1, false, true ) + "]", true );
-end;
+mid_button_text.set_caption( "CLOSE PROGRAM [" + response_manager.button_name( 1, false, true ) + "]", true );
 
 prompt_trial.present();
 

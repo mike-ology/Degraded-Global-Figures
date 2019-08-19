@@ -242,6 +242,15 @@ example3.set_load_size( 0, 0, 0.5 * scale_factor );
 example1.load();
 example2.load();
 example3.load();
+bitmap small_circle = new bitmap( "Instruction Examples/small_circle.png" );
+bitmap small_diamond = new bitmap( "Instruction Examples/small_diamond.png" );
+bitmap keyboard_key = new bitmap( "Instruction Examples/keyboard_key.png" );
+small_circle.set_transparent_color( 0, 255, 0 );
+small_diamond.set_transparent_color( 0, 255, 0 );
+keyboard_key.set_transparent_color( 0, 255, 0 );
+small_circle.load();
+small_diamond.load();
+keyboard_key.load();
 
 loop
 	int instruct_screen = 1;
@@ -270,7 +279,28 @@ begin
 
 	elseif instruct_screen == 3 then
 		create_new_prompt(2);
-		prompt_message.set_caption( "Your task is to decide what shape you think the larger shape is while ignoring\nthe smaller shapes.\n\n<b>You must make your responses quickly AND accurately</b>.\n\nIf you think the larger shape is a " + stim1 + ", press the " + response_manager.button_name( key1, false, true ) + " key.\nIf you think the larger shape is a " + stim2 + ", press the " + response_manager.button_name( key2, false, true ) + " key.", true );
+		prompt_message.set_caption( "Your task is to decide what shape you think the larger shape is while ignoring\nthe smaller shapes.\n\n<b>You must make your responses quickly AND accurately</b>.\n\n[[ If you think the larger shape is a " + stim1 + ", press the " + response_manager.button_name( 2, false, true ) + " key. ]]\n [[ If you think the larger shape is a " + stim2 + ", press the " + response_manager.button_name( 3, false, true ) + " key. ]]", true );
+		prompt_pic.set_part_y( 1, 250 );
+		text left_key = new text();
+		text right_key = new text();
+		left_key.set_background_color( 255, 255, 255 );
+		right_key.set_background_color( 255, 255, 255 );
+		left_key.set_caption( response_manager.button_name( 2, false, true ), true );
+		right_key.set_caption( response_manager.button_name( 3, false, true ), true );
+		prompt_pic.add_part( keyboard_key, -150, -300 );
+		prompt_pic.add_part( keyboard_key,  150, -300 );		
+		prompt_pic.add_part( left_key, -150, -300 );
+		prompt_pic.add_part( right_key,  150, -300 );
+		
+		if key_mapping == 1 then
+			prompt_pic.add_part( small_circle, -150, -130 );
+			prompt_pic.add_part( small_diamond, 150, -130 );
+		elseif key_mapping == 2 then
+			prompt_pic.add_part( small_circle, 150, -130 );
+			prompt_pic.add_part( small_diamond, -150, -130 );		
+		else
+		end;
+		
 		left_button_text.set_caption( "BACK [Z]", true );
 		right_button_text.set_caption( "NEXT [/]", true );
 		prompt_trial.set_terminator_buttons (  { 2, 3 } );
@@ -308,6 +338,9 @@ end;
 example1.unload();
 example2.unload();
 example3.unload();
+small_circle.unload();
+small_diamond.unload();
+keyboard_key.unload();
 
 #################################################################
 # Load local parts into an array for later global figure creation
@@ -354,7 +387,7 @@ begin
 	arr_l_parts[stimulus_type].add( next_bitmap );
 	next_bitmap.set_load_size( local_element_size, local_element_size, 0.0 );
 	next_bitmap.load();
-		
+	
 	i = i + 1;
 end;
 

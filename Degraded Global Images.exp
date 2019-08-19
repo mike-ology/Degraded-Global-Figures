@@ -50,7 +50,7 @@
 <filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_generate_prompt.pcl</filename>
 <filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_logfile_saving.pcl</filename>
 <filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_screen_scaling.pcl</filename>
-<filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\First Run - Parameter Check.sce</filename>
+<filename>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\sub_parameter_check.pcl</filename>
 </efs>
 <exclusive_mouse>1</exclusive_mouse>
 <exp_version>1.0.0</exp_version>
@@ -128,6 +128,12 @@
 </dat>
 <id>9</id>
 </val>
+<val>
+<dat>
+<val>0</val>
+</dat>
+<id>10</id>
+</val>
 </sd>
 <sid>-1</sid>
 </ss>
@@ -169,6 +175,12 @@
 <gn>Screen Resolution Check</gn>
 <pl>
 <pid>9</pid>
+</pl>
+</grp>
+<grp>
+<gn>Parameter Check</gn>
+<pl>
+<pid>10</pid>
 </pl>
 </grp>
 </grps>
@@ -326,14 +338,25 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <vis>1</vis>
 </set>
 </parm>
+<parm>
+<id>10</id>
+<set>
+<desc>If true, shows a message at the start of the scenario outlining parameters relating to screen dimensions, trials, blocks, practice trials and logfile saving. Helpful to ensure that the experiment is setup as desired, and can be disabled for subsequent runs.</desc>
+<edit>1</edit>
+<name>run_parameter_check</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>bool</type>
+<vis>1</vis>
+</set>
+</parm>
 </parms>
 <ssl></ssl>
 </parms>
 <pass></pass>
 <ssa>
-<asn>
-<sid>-1</sid>
-</asn>
 <asn>
 <sid>-1</sid>
 </asn>
@@ -350,7 +373,6 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <ftp>
 <ccc>0</ccc>
 <do_upload>
-<sce>1</sce>
 <sce>1</sce>
 </do_upload>
 <host></host>
@@ -386,7 +408,7 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <set_def_file></set_def_file>
 <stimulus_list>0</stimulus_list>
 <subject_id></subject_id>
-<subject_id_pol>0</subject_id_pol>
+<subject_id_pol>1</subject_id_pol>
 <video_list>0</video_list>
 <warnings>1</warnings>
 </log>
@@ -923,19 +945,6 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <sfn>all_scenarios</sfn>
 </sce>
 <sce>
-<idv>
-<device_type>3</device_type>
-<dx_device_type>19</dx_device_type>
-<ibn>Space</ibn>
-<idn>Keyboard</idn>
-<index>0</index>
-<label></label>
-<offset>57</offset>
-</idv>
-<overrides></overrides>
-<sfn>C:\Users\Michael\OneDrive\University\A. Current Projects\3310 (2019)\Degraded Global Figures\First Run - Parameter Check.sce</sfn>
-</sce>
-<sce>
 <abd>
 <device_type>3</device_type>
 <dx_device_type>19</dx_device_type>
@@ -1033,4 +1042,4 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <unc></unc>
 <upb>0</upb>
 <urp>0</urp>
-<wob>1</wob>
+<wob>0</wob>

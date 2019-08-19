@@ -2,6 +2,7 @@
 # Version: 1.0.0
 # Date: July 2019
 # Author: MCW English
+# GitHun Repo: https://github.com/mike-ology/Degraded-Global-Figures
 
 # This scenario creates and presents degraded global images of circles and squares
 # generated from user parameters set in the parameter window. The original concept
@@ -28,7 +29,7 @@ default_formatted_text = true;
 begin;
 
 $fixation_duration = 750;
-$exposure_duration = 300;
+$exposure_duration = 2000; #300;
 $trial_duration = 3000;
 
 trial {
@@ -77,6 +78,14 @@ trial {
 
 
 begin_pcl;
+
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+# Parameter Check
+include "sub_parameter_check.pcl";
+if parameter_manager.get_bool( "run_parameter_check", true ) == true then
+	first_run_parameter_check();
+else
+end;
 
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -146,7 +155,7 @@ create_logfile();
 	bool run_practice = parameter_manager.get_bool( "Run Practice Trials", true );
 	int max_practice_trials = parameter_manager.get_int( "Practice Block Size", 15 );
 
-	# These values are calculated automatically from previously entered value. However, it would
+	# These values are calculated automatically from previously entered values. However, it would
 	# be a good idea to check their values to ensure the number of trials generated is appropriate
 	# for the study.
 		

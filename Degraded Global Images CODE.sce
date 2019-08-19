@@ -783,12 +783,12 @@ begin
 				last_response_key = response_manager.last_response_label();
 			end;
 			
-			if key_mapping == 1 then
+			if key_mapping == 2 then
 				if (last_response_code == 2 && global_shape == "circ.") || ( last_response_code == 3 && global_shape == "diam." ) then
 					is_correct = 1;
 				else
 				end;
-			elseif key_mapping == 2 then
+			elseif key_mapping == 1 then
 				if (last_response_code == 3 && global_shape == "circ.") || ( last_response_code == 2 && global_shape == "diam." ) then
 					is_correct = 1;
 				else

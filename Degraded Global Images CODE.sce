@@ -2,7 +2,7 @@
 # Version: 1.0.1
 # Date: August 2019
 # Author: MCW English
-# GitHun Repo: https://github.com/mike-ology/Degraded-Global-Figures
+# GitHub Repo: https://github.com/mike-ology/Degraded-Global-Figures
 
 # This scenario creates and presents degraded global images of circles and squares
 # generated from user parameters set in the parameter window. The original concept
@@ -736,7 +736,7 @@ until
 begin
 
 	int i = 1;
-	arr_generated_stimuli.shuffle();
+	#arr_generated_stimuli.shuffle();
 
 	loop
 		int block;
@@ -797,8 +797,8 @@ begin
 			
 			event_stimulus.set_stimulus( arr_generated_stimuli[i] );
 			main_trial.present();
-			#arr_generated_stimuli[i].present();
-			#display_device.screenshot( "screenshot " + string(i) + ".bmp" );
+			arr_generated_stimuli[i].present();
+			display_device.screenshot( "screenshot/screenshot " + string(i) + ".bmp" );
 
 			stimulus_data last_stimulus = stimulus_manager.last_stimulus_data();
 			int reaction_time = last_stimulus.reaction_time();

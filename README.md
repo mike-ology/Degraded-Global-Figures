@@ -1,4 +1,5 @@
-# Degraded Global Figures Task
+<h1 align="center">Degraded Global Figures Task</h1>
+<p align="center"><i>Developed by Michael C W English</i></p>
 
 <p align="center"> <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example1.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example2.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example3.bmp" width="200" height="200"> </p>
 

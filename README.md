@@ -1,7 +1,5 @@
 # Degraded Global Figures Task
 
-*Documentation incomplete: additional documentation to provided at a later date*
-
 <p align="center"> <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example1.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example2.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example3.bmp" width="200" height="200"> </p>
 
 This scenario creates and presents degraded global images of circles and squares
@@ -88,5 +86,3 @@ Using many degradation levels will generate many unique trials, and using additi
 ## Parameter Summary
 
 - run_parameter_check - if TRUE, Presentation will first check the entered paramaters and provide some information about the scenario setup prior to beginning the instructions, such as block lengths, practice trials, and other parameters. This may be useful to ensure that your setup is configured desirably prior to running participants. If FALSE, this message will not be displayed and the scenario will run as normal.
-
-*Additional documentation to provided at a later date*

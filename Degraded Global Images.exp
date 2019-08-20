@@ -88,7 +88,7 @@
 </val>
 <val>
 <dat>
-<val>[20, 40]</val>
+<val>[20, 40, 60, 80]</val>
 </dat>
 <id>3</id>
 </val>
@@ -130,7 +130,7 @@
 </val>
 <val>
 <dat>
-<val>0</val>
+<val>1</val>
 </dat>
 <id>10</id>
 </val>
@@ -935,7 +935,7 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 </device>
 </rdl>
 <refchg>1</refchg>
-<rep>1</rep>
+<rep>2</rep>
 <require_name_match>0</require_name_match>
 <reschg>1</reschg>
 <rng>1</rng>

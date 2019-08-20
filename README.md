@@ -32,7 +32,7 @@ By programmatically generating an image with every possible combination of the a
 An additional Presentation scenario that was used to generate the images is present in the package files.
 
 ## The Global Level Stimuli
-These stimuli were constructed by arranging the local level stimuli into a 31 x 31 grid, and specifying certain parameters to make a global level circle or diamond appear in a 23 x 23 space on the 31 x 31 grid. Many of the characteristics of the global stimuli are similar to the local level stimuli, such as the corner offset of the shape and the shape/background shading. For each level of degradation, a minimum of 32 different figures are generated. This number may be multiplied by the number of 'offsets' used (maximum offsets = 4, maximum figures = 128).
+These stimuli were constructed by arranging the local level stimuli into a 31 x 31 grid, and specifying certain parameters to make a global level circle or diamond appear in a 23 x 23 space on the 31 x 31 grid. Many of the characteristics of the global stimuli are similar to the local level stimuli, such as the corner offset of the shape and the shape/background shading. For each level of degradation, a minimum of 32 different figures are generated. This number may be multiplied by the number of 'offsets' used (maximum offsets = 4, maximum figures = 128). The figures themselves were presented on a neutral gray background (RGB: 128, 128, 128 ).
 
 The images vary according to several parameters:
 - Global Shape: the main shape in each image was either a circle or a diamond
@@ -45,6 +45,10 @@ The images vary according to several parameters:
    - Dark-on-light This section was limited to local elements that were dark gray shapes on a black background, or black shapes on a dark gray background.
 
 ## Degradation Level
+
+<p align="center"> <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_0.png" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_20.png" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_40.png" width="200" height="200">  <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_60.png" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_80.png" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Online%20Documentation/example_100.png" width="200" height="200"> </p>
+<p align="center"><i>From left-to-right, and top-to-bottom, illustrations of increasing levels of degradation: 0%, 20%, 40%, 60%, 80%, and 100% degradation.</i></p>
+
 Stimuli of different degradation levels can be selected by entering the desired degradation levels in the parameter window prior to running the experiment. The stimulus examples at the top of the document illustrate the effects of increasing degradation levels, begining with 0 on the left. A value of 0 will generate images with 0% degradation whilst a value of 100 will generate images with 100& degradation. When each stimulus is generated, the degradation level for the current image will determine the chance that each local element is replaced with an element of random shading, rather than the shading required to construct the global shape. For each local element, a random number from 1-100 is generated, and if the random number is below the degradation level, a random local element that may or may not match the shading required to make a clear local shape is selected. Otherwise, a local element with correct shading is used.
 
 # Other Experiment Parameters
@@ -57,6 +61,11 @@ Using many degradation levels will generate many unique trials, and using additi
 
 - Maximum Blocks - This specifies how many unique blocks of trials are run. The total number of unique trials generated (based on other parameters) is divided by this value to obtain the block length, and a break is inserted following the end of each block. This value must be a factor or multiple of 32, or block lengths will not be a whole integer and Presentation will crash.
 - Maximum Repetitions - This specifies how many occurrances of each unique trial and block is presented. If left at a value of 1, the experiment will end when all trials and blocks have been presented once. If a value of 2, a second run of unique trials and blocks will be presented following the first, and so on. Useful if the number of unique trials generated is few, but the total number of trials desired is larger.
+
+## Trial Timing
+- Fixation Duration - period in ms that the fixation cross is displayed prior to onset of the main stimulus
+- Exposure Duration - period that the main stimulus is visible on the display. The stimulus is replaced by a ? prompt when this period expires. Participants may respond during this period.
+- Trial Duration - period that the trial will last until the trial ends if a response has not yet been made. Participants may respond during this period.
 
 ## Practice Trials
 

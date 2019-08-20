@@ -28,9 +28,9 @@ default_formatted_text = true;
 
 begin;
 
-$fixation_duration = 750;
-$exposure_duration = 2000; #300;
-$trial_duration = 3000;
+$fixation_duration = EXPARAM( "Fixation Duration" : 750 );
+$exposure_duration = EXPARAM( "Exposure Duration" : 300 ); #300;
+$trial_duration = EXPARAM( "Trial Duration" : 3000 ); #3000
 
 trial {
 	trial_duration = '$fixation_duration + $trial_duration';
@@ -593,7 +593,7 @@ arr_degradation_levels.append( deg_levels );
 
 # values to be divided by 100 later
 
-array <int> arr_stimulus_variations [2][2][4][2][4][total_offsets][31][31];
+array <int> arr_stimulus_variations [2][2][arr_degradation_levels.count()][2][4][total_offsets][31][31];
 # [local shape][luminance][degradation]...[[values stored in arr_all_temp_stimuli]]
 
 array <picture> arr_generated_stimuli [0];
@@ -683,7 +683,7 @@ begin
 								
 								# degradation check
 								if arr_degradation_levels[degradation] >= random( 1, 100 ) then
-									# degraded (random element of same shape
+									# degraded random element of same shape
 									arr_l_parts[l_shape].shuffle();
 									shape_part = arr_l_parts[l_shape][1];
 									background_part = arr_l_parts[l_shape][1];
@@ -736,7 +736,7 @@ until
 begin
 
 	int i = 1;
-	#arr_generated_stimuli.shuffle();
+	arr_generated_stimuli.shuffle();
 
 	loop
 		int block;
@@ -797,8 +797,8 @@ begin
 			
 			event_stimulus.set_stimulus( arr_generated_stimuli[i] );
 			main_trial.present();
-			arr_generated_stimuli[i].present();
-			display_device.screenshot( "screenshot/screenshot " + string(i) + ".bmp" );
+			#arr_generated_stimuli[i].present();
+			#display_device.screenshot( "screenshot/screenshot " + string(i) + ".bmp" );
 
 			stimulus_data last_stimulus = stimulus_manager.last_stimulus_data();
 			int reaction_time = last_stimulus.reaction_time();

@@ -82,13 +82,13 @@
 </val>
 <val>
 <dat>
-<val>4</val>
+<val>1</val>
 </dat>
 <id>2</id>
 </val>
 <val>
 <dat>
-<val>[0]</val>
+<val>[20,40,60,80]</val>
 </dat>
 <id>3</id>
 </val>
@@ -112,7 +112,7 @@
 </val>
 <val>
 <dat>
-<val>4</val>
+<val>1</val>
 </dat>
 <id>7</id>
 </val>
@@ -133,6 +133,24 @@
 <val>1</val>
 </dat>
 <id>10</id>
+</val>
+<val>
+<dat>
+<val>750</val>
+</dat>
+<id>11</id>
+</val>
+<val>
+<dat>
+<val>300</val>
+</dat>
+<id>12</id>
+</val>
+<val>
+<dat>
+<val>3000</val>
+</dat>
+<id>13</id>
 </val>
 </sd>
 <sid>-1</sid>
@@ -156,6 +174,14 @@
 <pid>4</pid>
 <pid>5</pid>
 <pid>6</pid>
+</pl>
+</grp>
+<grp>
+<gn>Trial Timing</gn>
+<pl>
+<pid>11</pid>
+<pid>12</pid>
+<pid>13</pid>
 </pl>
 </grp>
 <grp>
@@ -349,6 +375,49 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 </set>
 <temp>0</temp>
 <type>bool</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>11</id>
+<set>
+<desc>Duration (in ms) that the fixation cross appears on the screen prior to the presenation of the main stimulus. Value is not incorporated into overall trial duration</desc>
+<edit>1</edit>
+<name>Fixation Duration</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>12</id>
+<set>
+<desc>Duration (in ms) that the main stimulus is presented on-screen for. Following this period, the display will show a [?] prompt until the maximum trial duration is reached or a response occurs.
+*Value must be less than the trial duration parameter below.</desc>
+<edit>1</edit>
+<name>Exposure Duration</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
+<vis>1</vis>
+</set>
+</parm>
+<parm>
+<id>13</id>
+<set>
+<desc>Maximum duration of the trial (in ms), beginning from the onset of the main stimulus (not the fixation cross)</desc>
+<edit>1</edit>
+<name>Trial Duration</name>
+<set>
+<rest></rest>
+</set>
+<temp>0</temp>
+<type>int</type>
 <vis>1</vis>
 </set>
 </parm>

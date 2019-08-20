@@ -12,7 +12,9 @@ in global Gestalt perception. *Brain Structure and Function*, 217(3), 735–746.
 https://doi.org/10.1007/s00429-011-0369-y
 
 # Using the task
-Make sure to check the parameters in the Experiment Parameter Window prior to running the experiment. The number of trials may vary vastly depending on what is specified and users must implement an adequate number of blocks to break up the trials adequately.
+Make sure to check the parameters in the Experiment Parameter Window prior to running the experiment. The number of trials may vary vastly depending on what is specified and users must implement an adequate number of blocks to break up the trials adequately. When beginning the experiment, please use a subject number that ends with a digit as the program counter-balances response mapping across participants based on whether the last digit of the subject number being odd or even.
+
+The program generates a logfile table of data that includes accuracy and reaction time with separate lines for each trial (no lines for practice trials), but does not currently calculate any summary statistics. Users will need to calculate participant performance using their own software.
 
 # The Stimuli
 

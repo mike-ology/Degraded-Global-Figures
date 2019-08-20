@@ -73,7 +73,7 @@ Using many degradation levels will generate many unique trials, and using additi
 ## Local Element sizing and spacing
 
 - Local Element Size - This adjusts the size of the local elements in pixels and, consequently, the size of the overall global figure. You may want to change this value based on your setup.
-- Gap - This adjusts the size of the gap between local elements in pixels. A value of 1 creates a thin outline around each local element, similar to the stimuli used by the original authors of this task, Huberle & Karnath (2012). A value of 0 will remove the outline, whilst values larger than 1 will make it thicker, distance local elements in the process. This parameter also affects the size of the overall global figure.
+- Gap - This adjusts the size of the gap between local elements in pixels. A value of 1 creates a thin outline around each local element, similar to the stimuli used by the original authors of this task, Huberle & Karnath (2012). A value of 0 will remove the outline, whilst values larger than 1 will make it thicker, distance local elements in the process. This parameter also affects the size of the overall global figure. The 'gap' between local elements is the same colour as the background; neutral gray (RGG: 128, 128, 128).
 
 ## Logfile save behaviour
 

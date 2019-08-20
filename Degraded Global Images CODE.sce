@@ -1,5 +1,5 @@
 
-# Version: 1.0.1
+# Version: 1.1.0
 # Date: August 2019
 # Author: MCW English
 # GitHub Repo: https://github.com/mike-ology/Degraded-Global-Figures

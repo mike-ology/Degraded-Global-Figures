@@ -3,8 +3,7 @@
 
 <p align="center"> <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example1.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example2.bmp" width="200" height="200">    <img src="https://github.com/mike-ology/Degraded-Global-Figures/blob/master/Stimuli/Instruction%20Examples/example3.bmp" width="200" height="200"> </p>
 
-This scenario creates and presents degraded global images of circles and squares
-generated from user parameters set in the parameter window. The program was developed with NBS Presentation (version 21.0). Consequently, this software and an appropriate license is required to run the experiment.
+This scenario dynamically creates and presents degraded global images of circles and diamonds generated from user parameters set in the parameter window. The program was developed with NBS Presentation (version 21.0). Consequently, this software and an appropriate license is required to run the experiment.
 
 The original concept for these images is described in the paper below:
 
@@ -14,6 +13,8 @@ https://doi.org/10.1007/s00429-011-0369-y
 
 # Using the task
 Make sure to check the parameters in the Experiment Parameter Window prior to running the experiment. The number of trials may vary vastly depending on what is specified and users must implement an adequate number of blocks to break up the trials adequately. When beginning the experiment, please use a subject number that ends with a digit as the program counter-balances response mapping across participants based on whether the last digit of the subject number being odd or even.
+
+A slight pause in the program may occur prior to the beginning of the first block in each repetition of trials as the program generates new images. However, the brief pause occurs outside of the trial window and will not affect any trial timing. 
 
 The program generates a logfile table of data that includes accuracy and reaction time with separate lines for each trial (no lines for practice trials), but does not currently calculate any summary statistics. Users will need to calculate participant performance using their own software.
 

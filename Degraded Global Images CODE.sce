@@ -211,7 +211,9 @@ log.print( date_time() );
 log.print("\n");
 log.print( "Scale factor: " + string( scale_factor ) );
 log.print("\n");
-log.print( "Exposure time: " + string( parameter_manager.get_int( "Trial Duration", 1000 ) ) );
+log.print( "Exposure time: " + string( parameter_manager.get_int( "Exposure Duration", 1000 ) ) );
+log.print("\n");
+log.print( "Key Mapping: " + string( key_mapping ) );
 log.print("\n\n");
 
 # Data Table Header	
@@ -817,12 +819,12 @@ begin
 			end;
 			
 			if key_mapping == 2 then
-				if (last_response_code == 2 && global_shape == "circ.") || ( last_response_code == 3 && global_shape == "diam." ) then
+				if (last_response_code == 3 && global_shape == "circ.") || ( last_response_code == 2 && global_shape == "diam." ) then
 					is_correct = 1;
 				else
 				end;
 			elseif key_mapping == 1 then
-				if (last_response_code == 3 && global_shape == "circ.") || ( last_response_code == 2 && global_shape == "diam." ) then
+				if (last_response_code == 2 && global_shape == "circ.") || ( last_response_code == 3 && global_shape == "diam." ) then
 					is_correct = 1;
 				else
 				end;
@@ -910,6 +912,15 @@ begin
 	repetition = repetition + 1;
 end;
 
+double time = round ( ( double ( clock.time()) )/60000.00, 2 );
+log.print ( "\nTime to completion... " );
+log.print ( string( time ) + " minutes" ); 
+
+log.print( "\n" );
+log.print( "\n" );
+log.print( "===== TASK COMPLETE =====" );
+log.close();
+
 #########################################################
 # Subroutine to copy logfile back to the default location
 # Requires the strings associated with:
@@ -931,4 +942,5 @@ create_new_prompt( 1 );
 
 mid_button_text.set_caption( "CLOSE PROGRAM [" + response_manager.button_name( 1, false, true ) + "]", true );
 
+prompt_trial.set_terminator_buttons (  { 1 } );
 prompt_trial.present();

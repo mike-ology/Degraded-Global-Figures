@@ -33,7 +33,7 @@
 <dmd>32</dmd>
 <dmh>1080</dmh>
 <dmr>60</dmr>
-<dmrf>59.9400597979798</dmrf>
+<dmrf>60.020425119435</dmrf>
 <dmw>1920</dmw>
 <docs>
 <args></args>
@@ -82,13 +82,13 @@
 </val>
 <val>
 <dat>
-<val>1</val>
+<val>2</val>
 </dat>
 <id>2</id>
 </val>
 <val>
 <dat>
-<val>[20,40,60,80]</val>
+<val>[20,30,40,50,60,70,80]</val>
 </dat>
 <id>3</id>
 </val>
@@ -112,7 +112,7 @@
 </val>
 <val>
 <dat>
-<val>1</val>
+<val>4</val>
 </dat>
 <id>7</id>
 </val>
@@ -432,7 +432,7 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 </ssa>
 </man>
 </exparam>
-<experiment_id>{8CBA289D-D32D-4E3A-83C2-35AB869B3BFC}</experiment_id>
+<experiment_id>7C611909-92D0-43C8-9332-DFB29069D2AA</experiment_id>
 <font_settings>
 <dpi>96</dpi>
 <font_smooth>1</font_smooth>
@@ -548,53 +548,6 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <name>Keyboard</name>
 </device>
 <device>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Wheel</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<device_type>2</device_type>
-<dx_device_type>0</dx_device_type>
-<max_raw_pos>65535</max_raw_pos>
-<min_raw_pos>0</min_raw_pos>
-<name>HID-compliant mouse</name>
-</device>
-<device>
-<device_type>3</device_type>
-<dx_device_type>0</dx_device_type>
-<name>HID Keyboard Device</name>
-</device>
-<device>
 <device_type>3</device_type>
 <dx_device_type>0</dx_device_type>
 <name>Standard 101/102-Key or Microsoft Natural PS/2 Keyboard for HP Hotkey Support</name>
@@ -687,16 +640,6 @@ Optionally save logfile data initally to a location on the C:/ while the scenari
 <device_type>4</device_type>
 <dx_device_type>17</dx_device_type>
 <name>HP Wireless Button Driver</name>
-</device>
-<device>
-<device_type>4</device_type>
-<dx_device_type>17</dx_device_type>
-<name>Micr</name>
-</device>
-<device>
-<device_type>4</device_type>
-<dx_device_type>17</dx_device_type>
-<name>Micr 1</name>
 </device>
 <device>
 <axis>
